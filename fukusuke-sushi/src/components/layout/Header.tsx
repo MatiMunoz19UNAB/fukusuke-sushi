@@ -3,6 +3,7 @@
 
 import React from 'react';
 import { ShoppingCart, User, Menu, X } from 'lucide-react';
+import logo from '../../assets/logo.png';
 
 interface HeaderProps {
   isMenuOpen: boolean;
@@ -28,13 +29,14 @@ const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
-            <div className="text-4xl">🍣</div>
-            <div>
-              <h1 className="text-2xl font-bold text-slate-800">Fukusuke</h1>
-              <p className="text-xs text-slate-500">Sushi Delivery</p>
-            </div>
-          </div>
+          <a href="/" className="flex items-center space-x-3" aria-label="Ir a inicio">
+            <img
+              src={logo}
+              alt="Fukusuke logo"
+              className="w-36 h-12 object-contain"
+              draggable={false}
+            />
+          </a>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">

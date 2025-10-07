@@ -1,10 +1,26 @@
 // src/components/home/Features.tsx
 // Sección de características destacadas del servicio
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Clock, Star, MapPin } from 'lucide-react';
+import portada1 from '../../assets/portada1.png';
+import portada2 from '../../assets/portada2.png';
 
 const Features: React.FC = () => {
+  const images = [portada1, portada2];
+  const [index, setIndex] = useState(0);
+  const intervalRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    intervalRef.current = window.setInterval(() => {
+      setIndex((i) => (i + 1) % images.length);
+    }, 5000);
+
+    return () => {
+      if (intervalRef.current) window.clearInterval(intervalRef.current);
+    };
+  }, [images.length]);
+
   return (
     <section className="py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -46,6 +62,50 @@ const Features: React.FC = () => {
             <p className="text-slate-600">
               En un radio de 3 km desde Maipú
             </p>
+          </div>
+        </div>
+
+        {/* Portada / Galería */}
+        <div className="mt-12">
+          <div className="relative overflow-hidden rounded-2xl shadow-lg">
+            <div
+              className="flex transition-transform duration-700 ease-in-out"
+              style={{
+                width: `${images.length * 100}%`,
+                transform: `translateX(-${index * (100 / images.length)}%)`,
+              }}
+              aria-live="polite"
+            >
+              {images.map((src, i) => (
+                <div
+                  key={i}
+                  className="w-full flex-shrink-0 flex items-center justify-center bg-slate-50"
+                  style={{ width: `${100 / images.length}%`, height: '360px' }}
+                >
+                  <img
+                    src={src}
+                    alt={`Portada ${i + 1}`}
+                    // Mostrar imagen completa sin recortar: usamos object-contain y limitamos altura
+                    className="max-h-full w-auto max-w-full object-contain"
+                    draggable={false}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* indicadores */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+              {images.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setIndex(i)}
+                  className={`w-3 h-3 rounded-full transition-colors ${
+                    i === index ? 'bg-white' : 'bg-white/40'
+                  }`}
+                  aria-label={`Ir a portada ${i + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
