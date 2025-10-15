@@ -23,6 +23,7 @@ const Features: React.FC = () => {
 
   return (
     <section className="py-12 bg-white">
+      {/* Contenedor de características */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Feature 1 */}
@@ -64,48 +65,63 @@ const Features: React.FC = () => {
             </p>
           </div>
         </div>
+      </div>
 
-        {/* Portada / Galería */}
-        <div className="mt-12">
-          <div className="relative overflow-hidden rounded-2xl shadow-lg">
-            <div
-              className="flex transition-transform duration-700 ease-in-out"
-              style={{
-                width: `${images.length * 100}%`,
-                transform: `translateX(-${index * (100 / images.length)}%)`,
-              }}
-              aria-live="polite"
-            >
-              {images.map((src, i) => (
-                <div
-                  key={i}
-                  className="w-full flex-shrink-0 flex items-center justify-center bg-slate-50"
-                  style={{ width: `${100 / images.length}%`, height: '360px' }}
-                >
-                  <img
-                    src={src}
-                    alt={`Portada ${i + 1}`}
-                    // Mostrar imagen completa sin recortar: usamos object-contain y limitamos altura
-                    className="max-h-full w-auto max-w-full object-contain"
-                    draggable={false}
-                  />
-                </div>
-              ))}
-            </div>
-
-            {/* indicadores */}
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
-              {images.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setIndex(i)}
-                  className={`w-3 h-3 rounded-full transition-colors ${
-                    i === index ? 'bg-white' : 'bg-white/40'
-                  }`}
-                  aria-label={`Ir a portada ${i + 1}`}
+      {/* Carrusel fuera del contenedor para usar todo el ancho */}
+      <div className="mt-12 w-screen relative left-1/2 right-1/2 -mx-[50vw] overflow-hidden">
+        <div className="relative overflow-hidden">
+          <div
+            className="flex transition-transform duration-700 ease-in-out"
+            style={{
+              width: `${images.length * 100}%`,
+              transform: `translateX(-${index * (100 / images.length)}%)`,
+            }}
+            aria-live="polite"
+          >
+            {images.map((src, i) => (
+              <div
+                key={i}
+                className="w-full flex-shrink-0 flex items-center justify-center bg-white"
+                style={{ width: `${100 / images.length}%`, height: '500px' }}
+              >
+                <img
+                  src={src}
+                  alt={`Portada ${i + 1}`}
+                  className="max-h-full w-auto object-contain"
+                  draggable={false}
                 />
-              ))}
-            </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Flechas de navegación */}
+          <button
+            onClick={() => setIndex((index - 1 + images.length) % images.length)}
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/70 rounded-full p-2 hover:bg-white transition"
+            aria-label="Anterior"
+          >
+            ‹
+          </button>
+          <button
+            onClick={() => setIndex((index + 1) % images.length)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/70 rounded-full p-2 hover:bg-white transition"
+            aria-label="Siguiente"
+          >
+            ›
+          </button>
+
+          {/* Indicadores */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setIndex(i)}
+                className={`w-3 h-3 rounded-full transition-colors ${
+                  i === index ? 'bg-white' : 'bg-white/40'
+                }`}
+                aria-label={`Ir a portada ${i + 1}`}
+              />
+            ))}
           </div>
         </div>
       </div>
